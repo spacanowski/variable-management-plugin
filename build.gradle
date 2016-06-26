@@ -1,0 +1,21 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+version = '1.0'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    compile localGroovy()
+    compile gradleApi()
+    compile 'org.codehaus.groovy:groovy-all:2.4.7'
+}
+
+compileGroovy {
+    source = fileTree(dir: 'src/main/groovy')
+}
