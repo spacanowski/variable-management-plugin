@@ -10,22 +10,18 @@ class VariableManagementPlugin implements Plugin<Project> {
     }
 
     def configureVaraibles(Project project) {
-        def url = project.ext.get('variablesManagementUrl')
-        println url
-
-        if (url == null || url.empty) {
+        if (!project.hasProperty('variablesManagementUrl')) {
             throw new IllegalArgumentException('Url must be defined')
         }
 
-        getJson(url).each { k, v -> project.ext.set(k, v) }
+        getJson(project.getProperty('variablesManagementUrl')).each { k, v -> project.ext.set(k, v) }
     }
 
     def getJson(url) {
-        def cachedVersions = new File("~/.gradle/versions.json")
+        def cachedVersions = new File(System.getProperty("user.home") + "/.gradle/versions.json")
         try {
             def json = url.toURL().getText()
             cachedVersions.text = json
-            println json
             return new JsonSlurper().parseText(json)
         } catch (Exception e) {
             return new JsonSlurper().parse(cachedVersions)
