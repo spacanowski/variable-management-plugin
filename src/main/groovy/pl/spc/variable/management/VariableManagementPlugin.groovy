@@ -14,6 +14,11 @@ class VariableManagementPlugin implements Plugin<Project> {
             throw new IllegalArgumentException('Url must be defined')
         }
 
+        if (project.hasProperty('variablesManagementUser') && project.hasProperty('variablesManagementPsswd')) {
+            Authenticator.setDefault(new PasswordAuthentication(project.getProperty('variablesManagementUser'),
+                project.getProperty('variablesManagementPsswd').toCharArray()))
+        }
+
         getJson(project.getProperty('variablesManagementUrl')).each { k, v -> project.ext.set(k, v) }
     }
 
