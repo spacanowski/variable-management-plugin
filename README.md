@@ -21,7 +21,7 @@ apply plugin: "pl.spc.variable.management"
 versions json example
 ```json
 {
-     "groovyVersion": "2.4.7",
+    "groovyVersion": "2.4.7",
     "junitVersion": "4.+",
     "guavaVersion": "18.0",
     "secretNexus": "https://nexus.secretnexus.com/content/repositories/snapshots/"
