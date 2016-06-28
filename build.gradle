@@ -1,8 +1,11 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'signing'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+group = "com.github.spacanowski"
+archivesBaseName = "variable-managment-plugin"
 version = '1.0'
 
 repositories {
@@ -13,9 +16,76 @@ repositories {
 dependencies {
     compile localGroovy()
     compile gradleApi()
-    compile 'org.codehaus.groovy:groovy-all:2.4.7'
+    compile 'org.codehaus.groovy:groovy:2.4.7'
 }
 
 compileGroovy {
     source = fileTree(dir: 'src/main/groovy')
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14'
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+      mavenDeployer {
+        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+  
+        repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+          authentication(userName: ossrhUsername, password: ossrhPassword)
+        }
+  
+        snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+          authentication(userName: ossrhUsername, password: ossrhPassword)
+        }
+  
+        pom.project {
+          name 'variable-managment-plugin'
+          packaging 'jar'
+          description 'Gradle plugin for managing variables.'
+          url 'https://github.com/spacanowski/variable-managment-plugin'
+  
+          scm {
+            connection 'scm:git:https://github.com/spacanowski/variable-managment-plugin.git'
+            developerConnection 'scm:git:https://github.com/spacanowski/variable-managment-plugin.git'
+            url 'https://github.com/spacanowski/variable-managment-plugin.git'
+          }
+  
+          licenses {
+            license {
+              name 'The MIT License (MIT)'
+              url 'https://opensource.org/licenses/MIT'
+            }
+          }
+  
+          developers {
+            developer {
+              id 'spc'
+              name 'Szymon Pacanowski'
+              email 'spacanowski@gmail.com'
+            }
+          }
+        }
+      }
+    }
+  }
+
