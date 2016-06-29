@@ -6,10 +6,10 @@ import org.gradle.api.Project
 
 class VariableManagementPlugin implements Plugin<Project> {
     def void apply(Project project) {
-        configureVaraibles(project)
+        configureVariables(project)
     }
 
-    def configureVaraibles(Project project) {
+    def configureVariables(Project project) {
         if (!project.hasProperty('variablesManagementUrl')) {
             throw new IllegalArgumentException('Url must be defined')
         }
