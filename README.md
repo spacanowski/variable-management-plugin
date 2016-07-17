@@ -1,4 +1,4 @@
-# variable-managment-plugin
+# variable-management-plugin
 Gradle plugin for managing variables. Idea of this plugin is quite simple. When you have a lot of microservices or libraries and all have same urls or dependencies it's hard to change them all at once in every project. This plugin is for solving such problem by downloading json file with definitions of variables to use later in gradle script. So you store all your variables and versions in one place that needs to be changed instead of changing every build.gradle script. Plugin will store copy of this json in ```~/.gradle/versions.json``` for offline working.
 
 #How to use
